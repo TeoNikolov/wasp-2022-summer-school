@@ -1,0 +1,4 @@
+[submodule "baseline_by_taras"]
+	path = subsystem3_gesture-generation/models/baseline_by_taras
+	url = git@github.com:TeoNikolov/Speech_driven_gesture_generation_with_autoencoder.git
+	branch = GENEA_2022
