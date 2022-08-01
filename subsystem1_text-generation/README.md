@@ -1,5 +1,5 @@
 # WASP Summer School 2022 - Generating Text using GPT 
----
+
 [vpn_client_link]: https://92.33.3.42/aisweden
 [gpt3-sw3_endpoint]:http://10.167.0.10:8080/#/default/completions_v1_engines_gpt_sw3_completions_post
 
