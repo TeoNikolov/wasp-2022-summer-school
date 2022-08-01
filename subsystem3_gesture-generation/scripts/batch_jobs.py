@@ -4,10 +4,10 @@ import argparse
 import glob
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--train_ae", "-ae", action='store_true')
-parser.add_argument("--train_gg", "-gg", action='store_true')
-parser.add_argument("--predict", "-pred", action='store_true')
-parser.add_argument("--predict_epoch", "-epoch", help="Which model epoch to use when predicting gestures. Set to -1 for the last epoch.", type=int, default=-1)
+parser.add_argument("--train_ae", "-ae", help="If set, will pretrain all autoencoder variants (specified in script) of the Audio2Gestures network.", action='store_true')
+parser.add_argument("--train_gg", "-gg", help="If set, will pretrain all gesture generation model variants for all autoencoder variants (both specified in script) of the Audio2Gestures network.", action='store_true')
+parser.add_argument("--predict", "-pred", help="If set, will predict gestures using all autoencoder and gesture generation variants (both specified in script) of the Audio2Gestures network, for all .wav files in the input directory (specified in script)." action='store_true')
+parser.add_argument("--predict_epoch", "-epoch", help="Specifies the model epoch to use when predicting gestures. Set to -1 for the last epoch.", type=int, default=-1)
 
 args = parser.parse_args()
 
@@ -21,16 +21,14 @@ MODEL_DIR = os.path.join(SCRIPT_DIR, '..', 'models', 'Audio2Gestures')
 
 # train autoencoders
 AE_EPOCHS = 80
-# AE_DIMS = [8, 32, 128, 512]
-AE_DIMS = [8]
+AE_DIMS = [8, 32, 128, 512]
 if args.train_ae:
 	for adim in AE_DIMS:
 		subprocess.run(f'python {PIPELINE_SCRIPT} --dataset {DATASET} -adim {adim} -aeps {AE_EPOCHS} -ae', shell=True)
 
 # train the gesture generators
 GG_EPOCHS = 500
-# GG_DIMS = [8, 32, 128]
-GG_DIMS = [128]
+GG_DIMS = [8, 32, 128]
 GG_PERIOD = 10
 if args.train_gg:
 	for gdim in GG_DIMS:
