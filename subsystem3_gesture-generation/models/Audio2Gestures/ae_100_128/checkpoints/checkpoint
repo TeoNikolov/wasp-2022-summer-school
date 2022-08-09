@@ -1,0 +1,2 @@
+model_checkpoint_path: "/home/ubuntu/mltraining/wasp-2022-summer-school/subsystem3_gesture-generation/models/baseline_by_taras/models/ae_full_128/checkpoints/chkpt-final"
+all_model_checkpoint_paths: "/home/ubuntu/mltraining/wasp-2022-summer-school/subsystem3_gesture-generation/models/baseline_by_taras/models/ae_full_128/checkpoints/chkpt-final"
