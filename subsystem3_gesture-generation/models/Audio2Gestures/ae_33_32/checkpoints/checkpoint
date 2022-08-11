@@ -1,0 +1,2 @@
+model_checkpoint_path: "S:\\Work\\Tedi-dev\\wasp-2022-summer-school\\subsystem3_gesture-generation\\models\\baseline_by_taras\\models\\ae_33_32\\checkpoints\\chkpt-final"
+all_model_checkpoint_paths: "S:\\Work\\Tedi-dev\\wasp-2022-summer-school\\subsystem3_gesture-generation\\models\\baseline_by_taras\\models\\ae_33_32\\checkpoints\\chkpt-final"
