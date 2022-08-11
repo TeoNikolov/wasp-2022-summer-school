@@ -1,0 +1,3 @@
+[submodule "Neural-HMM"]
+	path = subsystem2_text-to-speech/Neural-HMM
+	url = git@github.com:NitheshChandher/Neural-HMM.git
