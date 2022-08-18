@@ -1,3 +1,8 @@
+# -- Disclaimer --
+# This script is deprecated and is not intended to be used during the summer school
+# The script was originally used to automate the training of the Audio2Gestures models, so it is left here for potential use in the future
+# It is recommended to not use this script, unless you have free time and want to play around with the system yourself (e.g. train your own models)
+
 import os
 import subprocess
 import argparse
