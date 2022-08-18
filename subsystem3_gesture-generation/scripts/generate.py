@@ -19,6 +19,9 @@ parser.add_argument("--smoothing_window_size", 	"-sws",		type=int, 							 	defa
 # parser.add_argument("--verbose", 				"-v",		type=int, 							 	default=13, 	help="The window size of the Savitsky-Golay digital filter.")
 args = parser.parse_args()
 
+args.input = args.input.resolve()
+args.output = args.output.resolve()
+
 if not os.path.exists(args.output):
 	os.makedirs(args.output)
 
