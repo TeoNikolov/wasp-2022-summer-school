@@ -1,6 +1,20 @@
 
 # Subsystem 3: Gesture Generation
 
+ - [Exercise 1 : Setup and get the base model to work](#exercise-1--setup-and-get-the-base-model-to-work)
+   * [Setting up the environment](#setting-up-the-environment)
+   * [Generating gestures](#generating-gestures)
+ - [Exercise 2 : Explore smoothing parameters](#exercise-2--explore-smoothing-parameters)
+ - [Exercise 3 : Explore representation dimensionality of the AE](#exercise-3--explore-representation-dimensionality-of-the-ae)
+ - [Exercise 4 : Explore the hidden layer size of the encoder](#exercise-4--explore-the-hidden-layer-size-of-the-encoder)
+ - [Exercise 5 : Play with the dataset size](#exercise-5--play-with-the-dataset-size)
+ - [Exercise 6 : Try the model on different audio](#exercise-6--try-the-model-on-different-audio)
+ - [Bonus Exercise : Using real speech for exercises 2-5](#bonus-exercise--using-real-speech-for-exercises-2-5)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
+---
+
 Before continuing, make sure that you have cloned the [wasp-2022-summer-school](https://github.com/TeoNikolov/wasp-2022-summer-school) and all child repositories by executing the following in your shell:
 
 - `git clone https://github.com/TeoNikolov/wasp-2022-summer-school.git`
@@ -160,4 +174,6 @@ Nice! You completed the exercises above! Now, do you happen to have extra time, 
 Is there a difference in results between real and synthetic speech, when varying the model parameters?
 
 Have a great day :)
+
+[Back to top](#subsystem-3-gesture-generation)
 
