@@ -1,11 +1,11 @@
 [submodule "Neural-HMM"]
 	path = subsystem2_text-to-speech/Neural-HMM
-	url = git@github.com:NitheshChandher/Neural-HMM.git
+	url = https://github.com/NitheshChandher/Neural-HMM.git
 [submodule "Audio2Gestures"]
 	path = subsystem3_gesture-generation/networks/Audio2Gestures
-	url = git@github.com:TeoNikolov/Speech_driven_gesture_generation_with_autoencoder.git
+	url = https://github.com/TeoNikolov/Speech_driven_gesture_generation_with_autoencoder.git
 	branch = GENEA_2022
 [submodule "GENEA_Visualizer"]
 	path = subsystem4_visualization/GENEA_Visualizer
-	url = git@github.com:MikeTsakov/genea_visualizer.git
+	url = https://github.com/MikeTsakov/genea_visualizer.git
 	branch = dev
