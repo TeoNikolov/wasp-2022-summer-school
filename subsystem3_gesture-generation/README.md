@@ -18,7 +18,7 @@
 
 ---
 
-Note: Before continuing, make sure that you have followed the [isntallation instructions](/wasp-2022-summer-school#installation) first.
+Note: Before continuing, make sure that you have followed the [isntallation instructions](README.md#installation) first.
 
 ## Exercise 1 : Setup and get the base model to work
 
