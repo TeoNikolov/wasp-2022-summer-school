@@ -1,60 +1,56 @@
 
+
+
 # Subsystem 3: Gesture Generation
 
- - [Exercise 1 : Setup and get the base model to work](#exercise-1--setup-and-get-the-base-model-to-work)
-   * [Setting up the environment](#setting-up-the-environment)
-   * [Generating gestures](#generating-gestures)
- - [Exercise 2 : Explore smoothing parameters](#exercise-2--explore-smoothing-parameters)
- - [Exercise 3 : Explore representation dimensionality of the AE](#exercise-3--explore-representation-dimensionality-of-the-ae)
- - [Exercise 4 : Explore the hidden layer size of the encoder](#exercise-4--explore-the-hidden-layer-size-of-the-encoder)
- - [Exercise 5 : Play with the dataset size](#exercise-5--play-with-the-dataset-size)
- - [Exercise 6 : Try the model on different audio](#exercise-6--try-the-model-on-different-audio)
- - [Bonus Exercise : Using real speech for exercises 2-5](#bonus-exercise--using-real-speech-for-exercises-2-5)
+
+- [Exercise 1 : Setup and get the base model to work](#exercise-1---setup-and-get-the-base-model-to-work)
+  * [Interacting with Audio2Gestures](#interacting-with-audio2gestures)
+  * [Generating gestures](#generating-gestures)
+- [Exercise 2 : Explore smoothing parameters](#exercise-2---explore-smoothing-parameters)
+- [Exercise 3 : Explore representation dimensionality of the AE](#exercise-3---explore-representation-dimensionality-of-the-ae)
+- [Exercise 4 : Explore the hidden layer size of the encoder](#exercise-4---explore-the-hidden-layer-size-of-the-encoder)
+- [Exercise 5 : Play with the dataset size](#exercise-5---play-with-the-dataset-size)
+- [Exercise 6 : Try the model on different audio](#exercise-6---try-the-model-on-different-audio)
+- [Bonus Exercise : Using synthetic audio for exercises 2-5](#bonus-exercise---using-synthetic-audio-for-exercises-2-5)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
 ---
 
-Before continuing, make sure that you have cloned the [wasp-2022-summer-school](https://github.com/TeoNikolov/wasp-2022-summer-school) and all child repositories by executing the following in your shell:
-
-- `git clone https://github.com/TeoNikolov/wasp-2022-summer-school.git`
-- `git submodule update --init`
-
-Remarks:
-- It is possible some commands fail due to lack of privilige. If this happens, please write `sudo` at the beginning of the command.
-- All file system paths in this documentation are relative to the directory in which this readme resides.
-
+Note: Before continuing, make sure that you have followed the [isntallation instructions](/../#installation) first.
 
 ## Exercise 1 : Setup and get the base model to work
 
-### Setting up the environment
-The gesture generation subsystem implements a single gesture model called `Audio2Gestures`. This model is located in `./networks/Audio2Gestures/`, and is maintained in a separate [GitHub repository](https://github.com/teonikolov/Speech_driven_gesture_generation_with_autoencoder/tree/GENEA_2022) (a fork of the [original repository](https://github.com/genea-workshop/Speech_driven_gesture_generation_with_autoencoder/tree/GENEA_2022) by [Taras Kucherenko](https://github.com/Svito-zar)). This model has an integration with Docker to automate the process of setting up a working environment with required dependencies, in which the model can be trained and used to predict gestures from raw audio.
+### Interacting with Audio2Gestures
+The gesture generation subsystem implements a single gesture model called `Audio2Gestures`. This model is located in `./subsystem3_gesture-generation/networks/Audio2Gestures/`, and is maintained in a separate [GitHub repository](https://github.com/teonikolov/Speech_driven_gesture_generation_with_autoencoder/tree/GENEA_2022) (a fork of the [original repository](https://github.com/genea-workshop/Speech_driven_gesture_generation_with_autoencoder/tree/GENEA_2022) by [Taras Kucherenko](https://github.com/Svito-zar)).
 
-The script `./scripts/deploy.sh` calls the necessary commands to leverage the Docker integration of the gesture model. The script first builds a Docker image by setting up a guest OS and collecting necessary dependencies, followed by deploying a Docker container in which the gesture model is encapsulated. In addition, the folder `./subsystem3_gesture-generation/` is mounted to `/app/wasp/` in the container's filesystem, so that pre-processed dataset files inside `./dataset/`, and pre-trained models inside `./models/`, can be accessed from within the Docker container. The model needs these files to predict gestures.
-
-To setup the environment:
-
-1. Make sure [Docker](https://docs.docker.com/get-docker/) is installed and running on your machine.
-1. `cd ./scripts/` and then run the script with `bash ./deploy.sh`
-1. Wait for Docker to set up the environment and deploy the container. This could take a while, so why not check this cool [fluid simulator](https://paveldogreat.github.io/WebGL-Fluid-Simulation/) out in the meantime?
-
-If everything went well, you will now have a Docker container with the gesture model running in the background. You can verify that this is the case by running `docker ps` in your shell, and searching for a container whose `IMAGE` says `"wasp-gg"`.  The next step is to open a shell to the container, so that we can interact with the files inside it. To do this, run the following command:
+This model uses Docker to automate the process of setting up a working environment, which means that we need to open a shell inside the corresponding Docker container to interact with Audio2Gestures. First, get the container ID of the Audio2Gestures Docker container, by writing `docker ps` and copying the container ID for the one whose `IMAGE` is `"wasp-gg"`. Then, execute the following (replacing `<container_ID>` with the ID you found):
 
 &nbsp;&nbsp;&nbsp;&nbsp;`docker exec -it <container_ID> /bin/bash`
 
-Replace `<container_ID>` with the ID of the container, which is shown using `docker ps`.
+Your terminal is now inside the Docker container. There are several local folders that are mounted in the container, so that their files can be accessed. They are:
+
+- `./data/` in `/app/wasp/data/`
+	- contains data files such as raw audio
+- `./scripts/` in `/app/wasp/scripts/`
+	- contains scripts that automate various tasks
+- `./subsystem3_gesture-generation/models/` in `/app/wasp/models/`
+	- contains pre-trained autoencoder and encoder models
+- `./subsystem3_gesture-generation/dataset/` in `/app/wasp/dataset/`
+	- contains metadata of dataset used to pre-train Audio2Gestures
 
 ### Generating gestures
 
-The next part of the exercise is to familiarize yourself with the generation procedure. For this, we will predict gestures for files inside the `./_input/exercise_1/`. For this purpose, you should use the supplied `./scripts/generate.py` script, located in `/app/wasp/scripts/` inside the Docker container. Navigate to that location using `cd /app/wasp/scripts/` and run the script as such:
+The next part of the exercise is to familiarize yourself with the generation procedure. For this, we will predict gestures for files inside `./data/subsystem3_exercises/exercise_1/`. For this purpose, you should use the supplied `./scripts/generate_gestures.py` script. Navigate to the location in the Docker container using `cd /app/wasp/scripts/` and then run:
 
-&nbsp;&nbsp;&nbsp;&nbsp;`python generate.py -i "../_input/exercise_1/" -o "../_output/exercise_1/" --pipeline_script "../../example_scripts/pipeline.py"`
+&nbsp;&nbsp;&nbsp;&nbsp;`python "generate_gestures.py" -i "../data/subsystem3_exercises/exercise_1/" --pipeline_script "../../example_scripts/pipeline.py"`
 
-- `-i` specifies a directory with input `.wav` raw audio files to predict gestures for
-- `-o` specifies a directory where generated `.bvh` files will be saved to
+- `-i` is a directory with input `.wav` raw audio files to predict gestures for
+- `-o` is a directory where generated `.bvh` files will be saved to (defaults to value of `-i`)
 - `--pipeline_script` points to the location of the `pipeline.py` script, which is responsible for invoking low-level functions of the Audio2Gestures model
 
-After calling the script, you will see files popping up inside `./_output/exercise_1/3-13-32-128-100/`. These files are the input `.wav` file, output `.bvh` file, as well as intermediate files used by the gesture model. The output directory `3-13-32-128-100/` is created to help you organize generated files. This will come in handy for the next exercises, as you will be modifying various parameters when running `generate.py`. The following naming convention is used:
+After calling the script, you will see files popping up inside `./data/subsystem3_exercises/exercise_1/3-13-32-128-100/`. These files are the input `.wav` file, output `.bvh` file, as well as intermediate files used by the gesture model. The output directory `3-13-32-128-100/` is created to help you organize generated files. This will come in handy for the next exercises, as you will be modifying various parameters when running `generate_gestures.py`. The folders use the following naming convention:
 
 &nbsp;&nbsp;&nbsp;&nbsp;`{1}_{2}_{3}_{4}_{5}`
 
@@ -64,9 +60,8 @@ After calling the script, you will see files popping up inside `./_output/exerci
 1. Hidden layer size of the encoder
 1. Size of data in % on which Audio2Gestures was trained on
 
-*Tip: Open `generate.py` in your favorite text editor, and take a peek at the code inside!*
-*Tip 2: The `generate.py` script processes all `.wav` files in the input directory. Make sure your audio files are in the same directory so you can process them in batch with a single command!*
-*Tip 3: There are more input and output files in `./_input/demo/` and `./_output/demo/` respectively (3 of synthesized speech, and 2 of real speech from YouTube). Feel free to use these audio files in the next exercises. In fact, we highly encourage you to do this, so you can compare the results of using different input data!*
+*Tip: Open `generate_gestures.py` in your favorite text editor, and take a peek at the code inside!*
+*Tip 2: The `generate_gestures.py` script processes all `.wav` files in the input directory. Having your audio files in the same directory allows you to process them in batch with a single command!*
 
 ## Exercise 2 : Explore smoothing parameters
 
@@ -86,9 +81,9 @@ We will use the same script from exercise 1, but this time you will pass values 
 - `--smoothing_poly_order` must be an integer between `1` and `11` inclusive (default is `3`)
 - `--smoothing_poly_order` must be lower than `--smoothing_window_size`
 
-Here is an example command (will output to `./_output/exercise_2/2-5-32-128-100/`):
+Here is an example command (outputs to `./data/subsystem3_exercises/exercise_2/2-5-32-128-100`):
 
-&nbsp;&nbsp;&nbsp;&nbsp;`python generate.py -spo 2 -sws 5 -i "../_input/exercise_2/" -o "../_output/exercise_2/" --pipeline_script "../../example_scripts/pipeline.py"`
+&nbsp;&nbsp;&nbsp;&nbsp;`python "generate_gestures.py" -i "../data/subsystem3_exercises/exercise_2/" --pipeline_script "../../example_scripts/pipeline.py" -spo 2 -sws 5`
 
 Now modify the parameters, and see how your generated gestures are affected by the smoothing filter!
 
@@ -105,9 +100,9 @@ As before, we will use the script from exercise 1, but this time you will pass a
 -  `128`
 -  `512`
 
-Here is an example command (will output to `./_output/exercise_3/3-13-128-128-100/`):
+Here is an example command (outputs to `./data/subsystem3_exercises/exercise_3/3-13-128-128-100/`):
 
-&nbsp;&nbsp;&nbsp;&nbsp;`python generate.py -aedim 128 -i "../_input/exercise_3/" -o "../_output/exercise_3/" --pipeline_script "../../example_scripts/pipeline.py"`
+&nbsp;&nbsp;&nbsp;&nbsp;`python "generate_gestures.py" -i "../data/subsystem3_exercises/exercise_3/" --pipeline_script "../../example_scripts/pipeline.py" -aedim 128`
 
 Go ahead, see how your generated gestures are affected by the autoencoder dimensionality!
 
@@ -125,9 +120,9 @@ This time you will pass a value to the `--encoder` (`-edim`) argument. Similar t
 -  `32`
 -  `128` (default)
 
-Here is an example command (will output to `./_output/exercise_4/3-13-128-128-100/`):
+Here is an example command (outputs to `./data/subsystem3_exercises/exercise_4/3-13-32-32-100/`):
 
-&nbsp;&nbsp;&nbsp;&nbsp;`python generate.py -edim 32 -i "../_input/exercise_4/" -o "../_output/exercise_4/" --pipeline_script "../../example_scripts/pipeline.py"`
+&nbsp;&nbsp;&nbsp;&nbsp;`python "generate_gestures.py" -i "../data/subsystem3_exercises/exercise_4/" --pipeline_script "../../example_scripts/pipeline.py" -edim 32`
 
 Time for you to see how your generated gestures are affected by the encoder hidden layer size!
 
@@ -142,38 +137,45 @@ Your task is to experiment with the amount of data, and to observe how much the 
 -  `33`
 -  `100` (default)
 
-Here is an example command (will output to `./_output/exercise_5/3-13-32-128-33/`):
+Here is an example command (outputs to `./data/subsystem3_exercises/exercise_5/3-13-32-128-33/`):
 
-&nbsp;&nbsp;&nbsp;&nbsp;`python generate.py -data 33 -i "../_input/exercise_5/" -o "../_output/exercise_5/" --pipeline_script "../../example_scripts/pipeline.py"`
+&nbsp;&nbsp;&nbsp;&nbsp;`python "generate_gestures.py" -i "../data/subsystem3_exercises/exercise_5/" --pipeline_script "../../example_scripts/pipeline.py" -data 33`
 
-Let's see... Does changing the data size affect the generated gestures significantly?
+Let's see... Do you think changing the data size affects the generated gestures?
 
-*Tip: Similar to prior exercises, look at gesture expressivity in terms of speed and location, as well as temporal synchrony with the speech.*
+*Tip: Similar to prior exercises, look at gesture expressiveness in terms of speed and location, as well as temporal synchrony with the speech.*
 
 ## Exercise 6 : Try the model on different audio
 
-Finally, it is important to think about how a model trained on real-world data performs when presented with data that does not fall in the original domain of the data.
+Finally, it is important to think about how a model trained on real-world data performs when presented with synthetic data.
 
 Q: Does this matter?
 A: Well, I am glad you asked. In our case, the Audio2Gestures model was trained on real speech, but we are using it with synthetic audio when generating gestures. Even if the model performs well on unseen real-world data, it may not perform well on data which is in some ways dissimilar from the one used during training.
 
 Your task is the check if the model differs noticeably in quality when generating gestures for real speech versus synthetic speech. At this point, you might have noticed an interesting pattern: we will use the script from exercise 1 (sorry!).
 
-This time there we do not need to change anything about the script, except the input and output directory. The `exercise_6` directory contains 3 audio files of synthetic speech, and 2 of real speech from YouTube. Generate corresponding gestures with the following command (will output to `./_output/exercise_6/3-13-32-128-100/`):
+This time, we do not need to change anything about the script, except the input directory. The `./data/subsystem3_exercises/exercise_6/` contains 3 audio files of synthetic speech, and 2 of real speech from YouTube. You should generate the corresponding gestures via the following command (outputs to `./data/subsystem3_exercises/exercise_6/3-13-32-128-100/`):
 
-&nbsp;&nbsp;&nbsp;&nbsp;`python generate.py -i "../_input/exercise_6/" -o "../_output/exercise_6/" --pipeline_script "../../example_scripts/pipeline.py"`
+&nbsp;&nbsp;&nbsp;&nbsp;`python "generate_gestures.py" -i "../data/subsystem3_exercises/exercise_6/" --pipeline_script "../../example_scripts/pipeline.py"`
 
-Take a look at the differences in gesture expessivity between real and synthetic speech now.
+Take a look at the differences in gesture expressiveness between real and synthetic speech now.
 
-*Tip: You can also experiment with your own audio files. What happens if you record your own voice? Speak in a different language? What about using audio without speech, but other sounds instead?*
+*Tip: You can also experiment with your own audio files. What happens if you record your own voice? Speak in a different language? What about using audio without speech, but other sounds instead? What if you play dubstep?*
 
-## Bonus Exercise : Using real speech for exercises 2-5
+## Bonus Exercise : Using synthetic audio for exercises 2-5
 
-Nice! You completed the exercises above! Now, do you happen to have extra time, and wish to know more about the capabilities of Audio2Gestures? Well, why not repeat exercises 2-5, but this time using real audio as opposed to synthetic? For this, you can use these saples from Exercise 6: `real_Andrew_Ng_Future_Forum_Youtube.wav` and `real_David_Laude_TEDx_Youtube.wav`
+Awesome! You completed all exercises!
 
-Is there a difference in results between real and synthetic speech, when varying the model parameters?
+Do you happen to have extra time, and wish to learn more about what Audio2Gestures is capable of? Well, why not repeat exercises 2-5, but this time instead of using real audio, you use synthetic one? For this, you can use samples from Exercise 6 (just copy-paste them in the Exercise # folders) and run the corresponding scripts:
+- `synthetic_Quentin_Tarantino.wav` 
+- `synthetic_Scottish.wav`
+- `synthetic_Welcome.wav`
 
-Have a great day :)
+What is interesting to see here is if changing the various generation parameters will yield similar differences in results when using synthetic audio versus real audio. Maybe the model performs well on real data when the encoder hidden layer size is high, but not so much when using synthetic data?
+
+Go ahead, and see for yourself!
+
+---
 
 [Back to top](#subsystem-3-gesture-generation)
 
