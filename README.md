@@ -70,6 +70,8 @@ Also take note of the `CONTAINER ID`, as it will be needed to run some of the sc
 
 You should now have all relevant software installed, as well as Docker containers set up and running. You are now ready to begin working on your assignments, which you will know more about from the tutorials presented to you during the summer school.
 
-Let us know if you need any help. **Good luck and have fun!**
+If you run into issues with the code, please **contact us** or **open an issue** in this repository. In addition, we would really appreciate any **feedback** you have.
+
+**Good luck and have fun!**
 
 [Back to top](#wasp-summer-school-2022)
