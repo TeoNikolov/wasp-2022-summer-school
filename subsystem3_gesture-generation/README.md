@@ -18,7 +18,7 @@
 
 ---
 
-Note: Before continuing, make sure that you have followed the [isntallation instructions](/../#installation) first.
+Note: Before continuing, make sure that you have followed the [isntallation instructions](/#installation) first.
 
 ## Exercise 1 : Setup and get the base model to work
 
