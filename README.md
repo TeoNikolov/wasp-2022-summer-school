@@ -31,8 +31,8 @@ To work with the pipeline, you need to install the following on your machine bef
 
 - [git](https://git-scm.com/downloads)
 - [Docker Desktop v4.7.0](https://docs.docker.com/get-docker/) or later
-- [Unreal Engine 4.25.4](https://www.unrealengine.com/en-US/download)
 - [Blender 2.83 LTS](https://www.blender.org/download/releases/2-83/)
+- [Unreal Engine 4.25.4](https://www.unrealengine.com/en-US/download) (Windows only)
 
 ### Cloning the repository
 
