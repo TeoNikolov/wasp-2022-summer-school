@@ -7,8 +7,7 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).parent.resolve()
 
 parser = argparse.ArgumentParser()
-# parser.add_argument("--epoch", "-e",				help="Specifies the model epoch to use when predicting gestures. Set to -1 for the last epoch.", type=int, default=-1)
-parser.add_argument("--pipeline_script", 					type=Path, 								default=SCRIPT_DIR / '..' / 'networks' / 'Audio2Gestures' / 'example_scripts' / 'pipeline.py',	help="The location of the 'pipeline.py' script for the Audio2Gestures model.")
+parser.add_argument("--pipeline_script", 					type=Path, 								default=SCRIPT_DIR / '..' / 'subsystem3_gesture-generation' / 'networks' / 'Audio2Gestures' / 'example_scripts' / 'pipeline.py',	help="The location of the 'pipeline.py' script for the Audio2Gestures model.")
 parser.add_argument("--input", 					"-i",		type=Path, 	 							default=SCRIPT_DIR / ".." / "data" / "demo", 		help="The directory with .wav files to generate gesture for.")
 parser.add_argument("--output", 				"-o",		type=Path, 					 																help="The directory where generated .bvh files should be output to.")
 parser.add_argument("--data_size", 				"-data",	type=int, 	choices=[33, 100], 			default=100, 	help="The amount of data in % on which the gesture model was trained on.")
@@ -16,7 +15,6 @@ parser.add_argument("--autoencoder", 			"-aedim",	type=int, 	choices=[8, 32, 128
 parser.add_argument("--encoder", 				"-edim",	type=int, 	choices=[8, 32, 128], 		default=128, 	help="The hidden layer size of the encoder.")
 parser.add_argument("--smoothing_poly_order", 	"-spo",		type=int, 	 							default=3, 		help="The polynomial order of the Savitsky-Golay digital filter.")
 parser.add_argument("--smoothing_window_size", 	"-sws",		type=int, 							 	default=13, 	help="The window size of the Savitsky-Golay digital filter.")
-# parser.add_argument("--verbose", 				"-v",		type=int, 							 	default=13, 	help="The window size of the Savitsky-Golay digital filter.")
 args = parser.parse_args()
 
 if args.output is None:
