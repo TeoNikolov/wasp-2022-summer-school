@@ -5,7 +5,3 @@
 	path = subsystem3_gesture-generation/networks/Audio2Gestures
 	url = https://github.com/TeoNikolov/Speech_driven_gesture_generation_with_autoencoder.git
 	branch = GENEA_2022
-[submodule "GENEA_Visualizer"]
-	path = subsystem4_visualization/GENEA_Visualizer
-	url = https://github.com/MikeTsakov/genea_visualizer.git
-	branch = dev
