@@ -1,3 +1,4 @@
+
 # WASP Summer School 2022
 
 - [Welcome](#welcome)
@@ -29,9 +30,9 @@ In addition, there are two folders in the repository root which are used for sto
 To work with the pipeline, you need to install the following on your machine before continuing with the rest of the setup:
 
 - [git](https://git-scm.com/downloads)
-- [Docker Desktop](https://docs.docker.com/get-docker/) v4.7.0 or later
-- [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install) if on Windows
+- [Docker Desktop v4.7.0](https://docs.docker.com/get-docker/) or later
 - [Unreal Engine 4.25.4](https://www.unrealengine.com/en-US/download)
+- [Blender 2.83 LTS](https://www.blender.org/download/releases/2-83/)
 
 ### Cloning the repository
 
@@ -46,31 +47,30 @@ The repository makes of [submodules](https://git-scm.com/book/en/v2/Git-Tools-Su
 
 ### Setting up the pipeline
 
-Subsystem 3 and subsystem 4 both use software that can be ran using Docker. This allows the us to easily set up a working environment with all necessary dependencies, minimizing the risk of running into issues during the process. The script `./scripts/deploy.sh` is provided to automate the process of deploying the Dockerized solutions of multiple applications. Run the script like this:
+Subsystem 3 uses code that uses Docker. This allows you to easily set up a working environment with all necessary dependencies, minimizing the risk of running into issues during the process. The script `./scripts/deploy.sh` is provided to automate the setup process. Run the script like this:
 
-- Make sure Docker Desktop is running!
+- First, make sure Docker Desktop is running!
 - `cd ./scripts/`
-- `bash ./deploy.sh`
+- `bash ./deploy.sh` on Linux, or `./deploy.ps1` on Windows (PowerShell)
 
-The script will build and deploy several Docker containers, as well as mount relevant folders so that they can be accessed within the containers. This process could take a while, so why not check this cool [fluid simulator](https://paveldogreat.github.io/WebGL-Fluid-Simulation/) out in the meantime?
+The script will build and deploy one Docker container, as well as mount relevant folders so that they can be accessed from within the container. This process could take a while, so why not check this cool [fluid simulator](https://paveldogreat.github.io/WebGL-Fluid-Simulation/) out in the meantime?
 
-When ready,  verify that the containers are deployed by running `docker ps` and looking for the following `IMAGE` strings:
+When ready,  verify that the container is deployed by running `docker ps` and looking for the following `IMAGE` string:
 
-- `wasp-gg` (subsystem 3 - Audio2Gestures)
-- `visualizer` (subsystem 4 - GENEA_Visualizer)
+- `wasp-gg` (Audio2Gestures from subsystem 3)
 
-Also take note of the `CONTAINER ID`, as it will be needed to run some of the scripts in `./scripts/` from within the Docker containers.
+Also take note of the `CONTAINER ID`, as it will be needed to run some of the scripts in `./scripts/` from within the Docker container.
 
 ### Remarks
 
-- It is possible that some commands fail due to lack of privilege. If this happens, please write `sudo` at the beginning of your commands.
-- All file system paths in this document (and documents inside the subsystem folders) are relative to the repository root.
+- It is possible that some commands fail due to lack of privilege. If this happens, write `sudo` at the beginning of your commands (on Linux) or launch your terminal with admin privilege (on Windows).
+- Generally, all file system paths in this document (and subsystem documents) are relative to the repository root.
 
 ## Next steps
 
-You should now have all relevant software installed, as well as Docker containers set up and running. You are now ready to begin working on your assignments, which you will know more about from the tutorials presented to you during the summer school.
+You should now have all relevant software installed, and Docker set up and running. You are now ready to begin working on your assignments, which you will know more about from the tutorials presented to you during the summer school.
 
-If you run into issues with the code, please **contact us** or **open an issue** in this repository. In addition, we would really appreciate any **feedback** you have.
+If you run into issues with the code, please **contact us** (Slack, on-site) or **open an issue** in this repository. In addition, we would really appreciate any **feedback** you have.
 
 **Good luck and have fun!**
 
