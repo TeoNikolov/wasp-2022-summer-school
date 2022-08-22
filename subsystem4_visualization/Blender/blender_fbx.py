@@ -49,26 +49,17 @@ def load_bvh(filepath):
 	bpy.ops.import_anim.bvh(filepath=filepath, use_fps_scale=False,
 	update_scene_fps=True, update_scene_duration=True, global_scale=0.01)
 
-def add_materials(work_dir):
-	mat = bpy.data.materials.new('gray')
-	mat.use_nodes = True
-	bsdf = mat.node_tree.nodes["Principled BSDF"]
-	texImage = mat.node_tree.nodes.new('ShaderNodeTexImage')
-	texImage.image = bpy.data.images.load(os.path.join(work_dir, 'model', "LowP_03_Texture_ColAO_grey5.jpg"))
-	mat.node_tree.links.new(bsdf.inputs['Base Color'], texImage.outputs['Color'])
-
-#	 obj = bpy.data.objects['LowP_01']
-	obj = bpy.data.objects['Lea1']
-	obj.modifiers['Armature'].use_deform_preserve_volume=True
-	# Assign it to object
-	if obj.data.materials:
-		obj.data.materials[0] = mat
-	else:
-		obj.data.materials.append(mat)
+def add_materials(work_dir, model):
+	if model == 'Lea':
+		obj = bpy.data.objects['Lea1']
+	elif model == 'Harold':
+		obj = bpy.data.objects['remesh_7_combined_Remeshed3']
+	elif model == 'Leffe':
+		obj = bpy.data.objects['Leif_NyMesh']
+	elif model == 'Majken':
+		obj = bpy.data.objects['highres6']
 	
-	# set new material to variable
-	mat = bpy.data.materials.new(name="FloorColor")
-	mat.diffuse_color = (0.15, 0.4, 0.25, 1)
+	obj.modifiers['Armature'].use_deform_preserve_volume=True
 	
 def constraintBoneTargets(armature = 'Armature', rig = 'None', mode = 'full_body'):
 	armobj = bpy.data.objects[armature]
@@ -112,11 +103,8 @@ def load_audio(filepath):
 ########################
 # Retarget Method No.1 #
 ########################
-def retarget_keemap(testing, config_path, src_name, dest_name = "Armature"):
+def retarget_keemap(testing, config_path, src_name, dest_name, duration):
 	
-	print(src_name)
-	print(dest_name)
-		
 	bpy.data.scenes["Scene"].keemap_settings.bone_mapping_file = config_path
 	bpy.ops.wm.keemap_read_file()
 		
@@ -124,7 +112,7 @@ def retarget_keemap(testing, config_path, src_name, dest_name = "Armature"):
 	bpy.data.scenes["Scene"].keemap_settings.destination_rig_name = dest_name
 	
 	bpy.data.scenes["Scene"].keemap_settings.start_frame_to_apply = 1
-	# bpy.data.scenes["Scene"].keemap_settings.number_of_frames_to_apply = 36
+	bpy.data.scenes["Scene"].keemap_settings.number_of_frames_to_apply = duration
 	bpy.data.scenes["Scene"].keemap_settings.keyframe_every_n_frames = 1
 	
 	bpy.data.scenes["Scene"].keemap_settings.keyframe_test = True
@@ -132,13 +120,6 @@ def retarget_keemap(testing, config_path, src_name, dest_name = "Armature"):
 	bpy.ops.wm.test_all_bones()
 	if testing == False:
 		bpy.ops.wm.perform_animation_transfer()
-	
-#	 start_frame = bpy.data.scenes["Scene"].keemap_settings.start_frame_to_apply
-#	 bone_file = bpy.data.scenes["Scene"].keemap_bone_mapping_list
-#	 bone_index = bpy.data.scenes["Scene"].keemap_bone_mapping_list_index
-#	 end_frame = bpy.data.scenes["Scene"].keemap_settings.number_of_frames_to_apply
-#	 source = bpy.data.scenes["Scene"].keemap_settings.source_rig_name
-#	 destination = bpy.data.scenes["Scene"].keemap_settings.destination_rig_name
 
 ########################
 # Retarget Method No.2 #
@@ -203,22 +184,16 @@ def main():
 		##### SET ARGUMENTS MANUALLY #####
 		##### IF RUNNING BLENDER GUI #####
 		##################################
-		ARG_BVH_PATHNAME = SCRIPT_DIR / 'output.bvh'
-		ARG_START_FRAME = 0
-		ARG_DURATION_IN_FRAMES = 3600
+		ARG_BVH_PATHNAME = SCRIPT_DIR / '../../data/subsystem3_exercises/exercise_1/3-13-32-128-100/real_Andrew_Ng_Future_Forum_Youtube.bvh'
 		ARG_OUTPUT_DIR = ARG_BVH_PATHNAME.parents[0]
-		print(ARG_OUTPUT_DIR)
 		ARG_TESTING = False
 		ARG_TESTING_TYPE = 'keemap'
 		ARG_MODEL = "Lea"
 	else:
 		print('[INFO] Script is running from command line.')
 		SCRIPT_DIR = Path(os.path.realpath(__file__)).parents[0]
-		# process arguments
 		args = parse_args()
 		ARG_BVH_PATHNAME = args['input']
-		ARG_START_FRAME = args['start']
-		ARG_DURATION_IN_FRAMES = args['duration']
 		ARG_OUTPUT_DIR = args['output_dir'].resolve() if args['output_dir'] else ARG_BVH_PATHNAME.parents[0]
 		ARG_TESTING = False
 		ARG_TESTING_TYPE = 'keemap'
@@ -235,10 +210,8 @@ def main():
 	
 	clear_scene()
 	load_fbx(FBX_MODEL)
-	add_materials(SCRIPT_DIR)
+	add_materials(SCRIPT_DIR, ARG_MODEL)
 	load_bvh(str(ARG_BVH_PATHNAME))
-	#Use retargeting plugin to transfer animation to new avatar
-	#constraintBoneTargets(rig = BVH_NAME, mode = ARG_MODE)
 	
 	if not os.path.exists(str(ARG_OUTPUT_DIR)):
 		os.mkdir(str(ARG_OUTPUT_DIR))
@@ -246,9 +219,8 @@ def main():
 		
 	total_frames = bpy.data.objects[BVH_NAME].animation_data.action.frame_range.y
 	keemap_config = str(SCRIPT_DIR / "keemap_conf.json")
-	#render_video(str(ARG_OUTPUT_DIR), ARG_IMAGE, ARG_VIDEO, BVH_NAME, ARG_START_FRAME, min(ARG_DURATION_IN_FRAMES, total_frames), ARG_RESOLUTION_X, ARG_RESOLUTION_Y)
 	if ARG_TESTING_TYPE == 'keemap':
-		retarget_keemap(ARG_TESTING, keemap_config, BVH_NAME)
+		retarget_keemap(ARG_TESTING, keemap_config, BVH_NAME, "Armature", total_frames)
 	elif ARG_TESTING_TYPE == 'retarget':
 		retarget_retarget(ARG_OUTPUT_DIR)
 	create_fbx(ARG_OUTPUT_DIR, ARG_MODEL, BVH_NAME)

@@ -78,5 +78,7 @@ for bvh_file in glob.glob(str(args.input / "*.bvh")):
 				bvh_file				,
 				'-o'					,
 				args.output				,
+				'-a'					,
+				args.avatar
 			]
 		)
