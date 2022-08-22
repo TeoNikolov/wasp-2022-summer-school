@@ -1,5 +1,6 @@
-
 # WASP Summer School 2022
+
+### Disclaimer: The repository will receive some updates during the summer school. However, we aim to have the needed information ready for your assignments. If you run into issues or you have questions, let us know on Slack (Nithesh, Mihail, Teodor)!
 
 - [Welcome](#welcome)
 - [Installation](#installation)
