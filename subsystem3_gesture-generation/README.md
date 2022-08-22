@@ -75,7 +75,7 @@ The process is very similar for exporting `.fbx` data, which is a matter of chan
 &nbsp;&nbsp;&nbsp;&nbsp;`python .\visualize_gestures.py --blender_exe "<blender_executable>" -i "../data/subsystem3_exercises/exercise_1/3-13-32-128-100/" --fbx`
 
 <p align="center">
-  <img src="https://github.com/TeoNikolov/wasp-2022-summer-school/subsystem4_visualization/avatars.png" alt="the 4 avatars">
+  <img src="https://github.com/TeoNikolov/wasp-2022-summer-school/blob/main/subsystem4_visualization/avatars.png" alt="the 4 avatars">
   <br>
   <i>The 4 avatars</i>
 </p>
