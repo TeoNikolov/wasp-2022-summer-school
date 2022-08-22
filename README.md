@@ -32,6 +32,7 @@ In addition, there are two folders in the repository root which are used for sto
 To work with the pipeline, you need to install the following on your machine before continuing with the rest of the setup:
 
 - [git](https://git-scm.com/downloads)
+- [Python 3.9.7](https://www.python.org/downloads/release/python-397/)
 - [Docker Desktop v4.7.0](https://docs.docker.com/get-docker/) or later
 - [Blender 2.83 LTS](https://www.blender.org/download/releases/2-83/) (also on Steam > Blender > Properties > Betas > 2.83 - Stable - LTS)
 - [Unreal Engine 4.25.4](https://www.unrealengine.com/en-US/download) (Windows only)
