@@ -6,7 +6,8 @@
 - [Installation](#installation)
   * [Prerequisites](#prerequisites)
   * [Cloning the repository](#cloning-the-repository)
-  * [Setting up the pipeline](#setting-up-the-pipeline)
+  * [Setting up Docker](#setting-up-docker)
+  * [Setting up Blender Keemap](#setting-up-blender-keemap)
   * [Remarks](#remarks)
 - [Next steps](#next-steps)
 
@@ -32,7 +33,7 @@ To work with the pipeline, you need to install the following on your machine bef
 
 - [git](https://git-scm.com/downloads)
 - [Docker Desktop v4.7.0](https://docs.docker.com/get-docker/) or later
-- [Blender 2.83 LTS](https://www.blender.org/download/releases/2-83/)
+- [Blender 2.83 LTS](https://www.blender.org/download/releases/2-83/) (also on Steam > Blender > Properties > Betas > 2.83 - Stable - LTS)
 - [Unreal Engine 4.25.4](https://www.unrealengine.com/en-US/download) (Windows only)
 
 ### Cloning the repository
@@ -42,13 +43,13 @@ To clone the repository, run this in your shell:
 - `git clone https://github.com/TeoNikolov/wasp-2022-summer-school.git`
 - `cd wasp-2022-summer-school`
 
-The repository makes of [submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) to include code from other repositories into this one without copying over the code files. To set up the submodules, write the following :
+The repository makes use of [submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) to include code from other repositories into this one without copying over the code files. To set up the submodules, write the following :
 
 - `git submodule update --init`
 
-### Setting up the pipeline
+### Setting up Docker
 
-Subsystem 3 uses code that uses Docker. This allows you to easily set up a working environment with all necessary dependencies, minimizing the risk of running into issues during the process. The script `./scripts/deploy.sh` is provided to automate the setup process. Run the script like this:
+Subsystem 3 has code that uses Docker. This allows you to easily set up a working environment with all necessary dependencies, minimizing the risk of running into issues during the process. The script `./scripts/deploy.sh` is provided to automate the setup process. Run the script like this:
 
 - First, make sure Docker Desktop is running!
 - `cd ./scripts/`
@@ -61,6 +62,21 @@ When ready,  verify that the container is deployed by running `docker ps` and lo
 - `wasp-gg` (Audio2Gestures from subsystem 3)
 
 Also take note of the `CONTAINER ID`, as it will be needed to run some of the scripts in `./scripts/` from within the Docker container.
+
+### Setting up Blender Keemap
+
+The animations exported by the gesture generation models are produced for a particular skeleton (source), defined inside `.bvh` files exported during gesture generation. However, the 3D avatars you will use do not necessarily have the same skeletal hierarchy or proportions (target). The process of transferring animation from one character to another is called "retargeting', and for this we can use the [Keemap plugin](https://github.com/nkeeline/Keemap-Blender-Rig-ReTargeting-Addon)  for Blender. You do not need to go to the repository as we have the necessary files included in the summer school project.
+
+To install Keemap, do the following:
+
+- Open `Blender`
+- Select `Edit > Preferences > Add-ons`
+- Select `Install`
+- Navigate to the repository folder and then go to `/subsystem4_visualization/Blender/KeeMapAnimRetarget.zip`
+- Enable `Transfer Animation: KeeMap Animation Transfer Tool` plugin
+- Exit `Blender`
+
+That's it!
 
 ### Remarks
 
