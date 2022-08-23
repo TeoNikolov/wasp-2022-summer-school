@@ -64,6 +64,8 @@ You will learn about the above topics in the exercises below.
 
 ### Visualizing gestures
 
+*Note: For this exercise, you should NOT use the Docker shell you opened above!*
+
 The above steps lead you to obtaining animation data in the form of `.bvh` files. Next, you will visualize the animation data with a 3D avatar in order to subjectively evaluate the quality of the generated gesture motion. For this, Blender is used to retarget the animation data onto various 3D avatars, which can then be exported in either a `.mp4` video format, or a standard `.fbx` 3D data format (with `.mp4` being better for fast iterations, and `.fbx` being a requirement for use in Unreal Engine). For this, you will use the provided `./scripts/visualize_gestures.py` script which interacts with Blender. *Make sure to note down the location of your Blender executable first, as you will need it.*
 
 To visualize videos, [code for GENEA Challenge 2022](https://github.com/TeoNikolov/genea_visualizer/) is used that includes a prototype avatar. Knowing your `<blender_executable>` path, you can render a video with the following command (in my case, it was `"C:/Program Files (x86)/Steam/steamapps/common/Blender/blender.exe"`):
