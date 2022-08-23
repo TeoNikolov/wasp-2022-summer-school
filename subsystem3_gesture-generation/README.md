@@ -215,6 +215,8 @@ Do you happen to have extra time, and wish to learn more about what Audio2Gestur
 
 What is interesting to see here is if changing the various generation parameters will yield similar differences in results when using synthetic audio versus real audio. Maybe the model performs well on real data when the encoder hidden layer size is high, but not so much when using synthetic data?
 
+You can use [Audacity](https://www.audacityteam.org/) to record your voice, or any other recording software you have that can output a `.wav` file.
+
 Go ahead, and see for yourself!
 
 **Reminder: Remember to visualize the data as you did for Exercise 1!**
